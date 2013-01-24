@@ -49,8 +49,36 @@ describe "User pages" do
       end
     end
 
+  end
+
+  describe "logged user should not access users_controller#new" do
+
+    let(:user) { FactoryGirl.create(:user) }
+
+    before do
+      sign_in user
+      visit new_user_path
+    end
+
+    # specify { response.should redirect_to(root_path) }
+    it { should have_selector('h1',    text: "Welcome to the Sample App") }
 
   end
+
+  describe "logged user should not access users_controller#create" do
+
+    let(:user) { FactoryGirl.create(:user) }
+
+    before do
+      sign_in user
+      post users_path(user)
+    end
+
+    # it { should have_selector('h1',    text: "Welcome to the Sample App") }
+    specify { response.should redirect_to(root_path) }
+
+  end
+
 
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
