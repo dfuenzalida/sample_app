@@ -47,6 +47,21 @@ describe "User pages" do
         end
         it { should_not have_link('delete', href: user_path(admin)) }
       end
+
+      describe "prevent admin users from destroying themselves" do
+
+        let(:admin) { FactoryGirl.create(:admin) }
+        before do
+          sign_in admin
+          visit users_path
+        end
+
+        it "should not be able to delete himself" do
+          expect { delete user_path(admin)}.not_to change(User, :count)
+        end
+
+      end
+
     end
 
   end
