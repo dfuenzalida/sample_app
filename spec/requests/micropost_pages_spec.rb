@@ -24,11 +24,36 @@ describe "Micropost pages" do
 
     describe "with valid information" do
 
+      describe "with micropost counts" do
+        before { visit root_path }
+        it { should have_content('0 microposts') }
+
+        describe "should read to one micropost" do
+          before "1 micropost" do
+            fill_in 'micropost_content', with: "Lorem ipsum"
+            click_button "Post"
+          end
+          it { should have_content('1 micropost') }
+        end
+
+        describe "should read to 2 microposts" do
+          before "2 micropost" do
+            fill_in 'micropost_content', with: "Lorem ipsum"
+            click_button "Post"
+            fill_in 'micropost_content', with: "Lorem ipsum"
+            click_button "Post"
+          end
+          it { should have_content('2 microposts') }
+        end
+
+      end
+
       before { fill_in 'micropost_content', with: "Lorem ipsum" }
       it "should create a micropost" do
         expect { click_button "Post" }.to change(Micropost, :count).by(1)
       end
     end
+
   end
 
   describe "micropost destruction" do
