@@ -46,6 +46,19 @@ describe "Micropost pages" do
           it { should have_content('2 microposts') }
         end
 
+        describe "should have more than one page after 50 microposts" do
+          before "creating 50 microposts" do
+            (1..50).each do |num|
+              fill_in 'micropost_content', with: "micropost ##{num}!"
+              click_button "Post"
+            end
+            click_link "Next"
+          end
+
+          it { should have_content('micropost #1') }
+
+        end
+
       end
 
       before { fill_in 'micropost_content', with: "Lorem ipsum" }
